@@ -21,7 +21,7 @@ const guessField =
 
 let guessCount = 1; /* first try */
 let resetButton;
-// improvement to the resetButton wit focus()
+// improvement to the resetButton with focus()
 guessField.focus();
 
 // Function to checkGuess
