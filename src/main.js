@@ -1,7 +1,7 @@
 // Setting up variables and constants we need to store the data that the program will use :)
 let randomNumber =
   Math.floor(Math.random() * 100) + 1; /* assigned to a number btw 1 & 100 */
-
+console.log(`${randomNumber} is the random number`);
 // storing reference tot the result paragraphs in the HTML
 // it's used to insert values it paragraphs
 // all contained in div -> .resultParas -> added later
@@ -37,11 +37,13 @@ function checkGuess() {
     lastResult.textContent = "Congratulations! You got it right!";
     lastResult.style.backgroundColor = "green";
     lowOrHi.textContent = "";
+    userFeedback.parentNode.removeChild(userFeedback);
     setGameOver();
   } else if (guessCount === 10) {
     lastResult.textContent = "!!!GAME OVER!!!";
     lowOrHi.textContent = "";
-    // randomNumberReveal.textContent = `${randomNumber} was the the random number. Better luck guessing next time!`;
+    userFeedback.parentNode.removeChild(userFeedback);
+    randomNumberReveal.textContent = `${randomNumber} was the the random number. Better luck next time!`;
     setGameOver();
   } else {
     lastResult.textContent = "Wrong!";
@@ -55,22 +57,17 @@ function checkGuess() {
     }
   }
 
-  // //
-
   guessCount++;
   guessField.value = "";
   guessField.focus();
+  const guessCounter = `${guessCount}`;
+  userFeedback.textContent = `You have ${
+    Number(10 + 1) - guessCounter
+  } guesses left.`;
 }
 // console.log(`Your last guess was ${userGuess}.`); /* [  ] delete this later */
-// const guessCounter = `${guessCount}`;
-// console.log(
-//   `You have guessed ${guessCounter} times.`
-// ); /* [  ] delete this later */
 
 // // update userFeedback in the DOM with guesses left
-// userFeedback.textContent = `You have ${
-//   Number(10 + 1) - guessCounter
-// } guesses left.`;
 
 // * Add evenListener to implement the checkGuess() function for
 guessSubmit.addEventListener("click", checkGuess);
@@ -92,7 +89,7 @@ function setGameOver() {
     document.createElement(
       "button"
     ); /* ? why wasn't resetButton declared as a constant or a variable first? */
-  resetButton.textContent = "Start new game";
+  resetButton.textContent = "Start a new game";
   document.body.appendChild(resetButton); /* could use append() too */
   resetButton.addEventListener("click", resetGame);
 }
@@ -106,11 +103,13 @@ function resetGame() {
   // use querySelectorAll to select all the p elements in DOM
   const resetParas = document.querySelectorAll(".resultParas p");
 
-  // ? use for...of loop to run a piece of code over and over again, until a condition is met
+  // use for...of loop to run a piece of code over and over again, until a condition is met
   for (const resetPara of resetParas) {
     /* can you explain this GitHub Copilot? :D :D :D :D  */
     resetPara.textContent = "";
   }
+  // remove randomNumberReveal from the DOM parentNode
+  randomNumberReveal.parentNode.removeChild(randomNumberReveal);
   // remove the resetButton from the DOM
   resetButton.parentNode.removeChild(resetButton);
   // enable the previously disabled input fields, the submit button, the value, and focus..
@@ -122,6 +121,6 @@ function resetGame() {
   // reset the lastResult backgroundColor to white
   lastResult.stylebackgroundColor = "white";
 
-  // ? why are we using the same variable for the randomNumber as well?
+  // why are we using the same variable for the randomNumber as well?
   randomNumber = Math.floor(Math.random() * 100) + 1;
 }
