@@ -2,10 +2,6 @@
 let randomNumber =
   Math.floor(Math.random() * 100) + 1; /* assigned to a number btw 1 & 100 */
 
-console.log(
-  `The random number is ${randomNumber}.`
-); /* [  ] delete this later */
-
 // storing reference tot the result paragraphs in the HTML
 // it's used to insert values it paragraphs
 // all contained in div -> .resultParas -> added later
@@ -30,7 +26,6 @@ guessField.focus();
 
 // Function to checkGuess
 function checkGuess() {
-  // alert("I am a placeholder");
   const userGuess = Number(guessField.value);
 
   if (guessCount === 1) {
@@ -46,7 +41,7 @@ function checkGuess() {
   } else if (guessCount === 10) {
     lastResult.textContent = "!!!GAME OVER!!!";
     lowOrHi.textContent = "";
-    randomNumberReveal.textContent = `${randomNumber} was the the random number. Better luck guessing next time!`;
+    // randomNumberReveal.textContent = `${randomNumber} was the the random number. Better luck guessing next time!`;
     setGameOver();
   } else {
     lastResult.textContent = "Wrong!";
@@ -59,25 +54,23 @@ function checkGuess() {
       }
     }
   }
-  console.log(`Your last guess was ${userGuess}.`); /* [  ] delete this later */
-  const guessCounter = guessCount++;
-  console.log(
-    `You have guessed ${guessCounter} times.`
-  ); /* [  ] delete this later */
-
-  // update userFeedback in the DOM with guesses left
-  userFeedback.textContent = `You have ${
-    Number(10 + 1) - guessCounter
-  } guesses left.`;
-
-  // update the randomNumberReveal in the DOM
 
   // //
-}
 
-guessCount++;
-guessField.value = " ";
-guessField.focus();
+  guessCount++;
+  guessField.value = "";
+  guessField.focus();
+}
+// console.log(`Your last guess was ${userGuess}.`); /* [  ] delete this later */
+// const guessCounter = `${guessCount}`;
+// console.log(
+//   `You have guessed ${guessCounter} times.`
+// ); /* [  ] delete this later */
+
+// // update userFeedback in the DOM with guesses left
+// userFeedback.textContent = `You have ${
+//   Number(10 + 1) - guessCounter
+// } guesses left.`;
 
 // * Add evenListener to implement the checkGuess() function for
 guessSubmit.addEventListener("click", checkGuess);
@@ -96,11 +89,11 @@ function setGameOver() {
   guessField.disabled = true;
   guessSubmit.disabled = true;
   resetButton =
-    document.createELement(
+    document.createElement(
       "button"
     ); /* ? why wasn't resetButton declared as a constant or a variable first? */
   resetButton.textContent = "Start new game";
-  document.body.append(resetButton);
+  document.body.appendChild(resetButton); /* could use append() too */
   resetButton.addEventListener("click", resetGame);
 }
 
