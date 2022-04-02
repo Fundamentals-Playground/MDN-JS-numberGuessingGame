@@ -2,6 +2,10 @@
 let randomNumber =
   Math.floor(Math.random() * 100) + 1; /* assigned to a number btw 1 & 100 */
 
+console.log(
+  `The random number is ${randomNumber}.`
+); /* [  ] delete this later */
+
 // storing reference tot the result paragraphs in the HTML
 // it's used to insert values it paragraphs
 // all contained in div -> .resultParas -> added later
@@ -9,8 +13,15 @@ const guesses = document.querySelector(".guesses");
 const lastResult = document.querySelector(".lastResult");
 const lowOrHi = document.querySelector(".lowOrHi");
 
-const guessSubmit = document.querySelector(".guessSubmit");
-const guessField = document.querySelector(".guessField");
+// custom class to querySelector the p with class userFeedback
+// use this to display the tries left, guess count, and last guess and more...
+const userFeedback = document.querySelector(".userFeedback");
+// reveal the randomNumber at the end of the game if the user couldn't guess right...
+const randomNumberReveal = document.querySelector(".randomNumberReveal");
+
+const guessSubmit = document.querySelector(".guessSubmit"); /* button in DOM */
+const guessField =
+  document.querySelector(".guessField"); /* input field in DOM */
 
 let guessCount = 1; /* first try */
 let resetButton;
@@ -19,6 +30,7 @@ let resetButton;
 function checkGuess() {
   // alert("I am a placeholder");
   const userGuess = Number(guessField.value);
+
   if (guessCount === 1) {
     guesses.textContent = "Previous guesses: ";
   }
@@ -32,6 +44,7 @@ function checkGuess() {
   } else if (guessCount === 10) {
     lastResult.textContent = "!!!GAME OVER!!!";
     lowOrHi.textContent = "";
+    randomNumberReveal.textContent = `${randomNumber} was the the random number. Better luck guessing next time!`;
     setGameOver();
   } else {
     lastResult.textContent = "Wrong!";
@@ -44,27 +57,76 @@ function checkGuess() {
       }
     }
   }
-}
+  console.log(`Your last guess was ${userGuess}.`); /* [  ] delete this later */
+  const guessCounter = guessCount++;
+  console.log(
+    `You have guessed ${guessCounter} times.`
+  ); /* [  ] delete this later */
 
+  // update userFeedback in the DOM with guesses left
+  userFeedback.textContent = `You have ${
+    Number(10 + 1) - guessCounter
+  } guesses left.`;
+
+  // update the randomNumberReveal in the DOM
+
+  // //
+}
 
 guessCount++;
 guessField.value = " ";
 guessField.focus();
 
-// Add evenListener to implement the checkGuess() function for
+// * Add evenListener to implement the checkGuess() function for
 guessSubmit.addEventListener("click", checkGuess);
+
+// * Add eventListener to run the checkGuess() function when the user presses the Enter key (event.keyCode === 13)
+guessField.addEventListener("keypress", function (event) {
+  if (event.keyCode === 13) {
+    checkGuess();
+  }
+});
 
 // finish the game functionality and reset the game after 10 tries
 // function to reset the game setGameOver()
 
-function SetGameOver() {
+function setGameOver() {
   guessField.disabled = true;
   guessSubmit.disabled = true;
-  resetButton = document.createELement('button');
-  resetButton.textContent = 'Start new game';
+  resetButton =
+    document.createELement(
+      "button"
+    ); /* ? why wasn't resetButton declared as a constant or a variable first? */
+  resetButton.textContent = "Start new game";
   document.body.append(resetButton);
-  resetButton.addEventListener('click', resetGame);
+  resetButton.addEventListener("click", resetGame);
 }
 
+function resetGame() {
+  // set guess count back to 1
+  guessCount = 1;
 
-xxxx
+  // declare constant for <div> with class .resultParas and
+  // use querySelectorAll to select all the p elements in DOM
+  const resetParas = document.querySelectorAll(".resultParas p");
+
+  for (const resetPara of resetParas) {
+    /* can you explain this GitHub Copilot? :D :D :D :D  */
+    resetPara.textContent = "";
+  }
+
+  // remove the resetButton from the DOM
+  resetButton.parentNode.removeChild(resetButton);
+
+  // enable the previously disabled input fields, the submit button, the value, and focus..
+  guessField.disabled = false;
+  guessSubmit.disabled = false;
+  guessField.value = "";
+  guessField.focus();
+
+  // reset the lastResult backgroundColor to white
+  lastResult.stylebackgroundColor = "white";
+
+  // ? why are we using the same variable for the randomNumber as well?
+  randomNumber = Math.floor(Math.random() * 100) + 1;
+}
