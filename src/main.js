@@ -25,6 +25,8 @@ const guessField =
 
 let guessCount = 1; /* first try */
 let resetButton;
+// improvement to the resetButton wit focus()
+guessField.focus();
 
 // Function to checkGuess
 function checkGuess() {
@@ -102,6 +104,7 @@ function setGameOver() {
   resetButton.addEventListener("click", resetGame);
 }
 
+// * Resetting the game functionality
 function resetGame() {
   // set guess count back to 1
   guessCount = 1;
@@ -110,14 +113,13 @@ function resetGame() {
   // use querySelectorAll to select all the p elements in DOM
   const resetParas = document.querySelectorAll(".resultParas p");
 
+  // ? use for...of loop to run a piece of code over and over again, until a condition is met
   for (const resetPara of resetParas) {
     /* can you explain this GitHub Copilot? :D :D :D :D  */
     resetPara.textContent = "";
   }
-
   // remove the resetButton from the DOM
   resetButton.parentNode.removeChild(resetButton);
-
   // enable the previously disabled input fields, the submit button, the value, and focus..
   guessField.disabled = false;
   guessSubmit.disabled = false;
